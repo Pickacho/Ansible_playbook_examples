@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: repo_name
+      description: Description of repo
+      baseurl: https://website.com/full/path/of/base/url/gpgcheck:no
+    - name: Remove a repository from a repo file
+      yum_repository: 
+        name: repo_name
+        file: repo_file_name (without the ".repo" extension)
+        state: absent
+# Example: 
+---
+- host: all
+  become: yes
+  tasks:
+    - name: add epel repo
+      yum_repository:
+        name: epel
+        description: Epel Yum repo
+        baseurl: https://dl.fedoraprogect.org/pub/epel/epel-release-latest-8.noarch.rpm

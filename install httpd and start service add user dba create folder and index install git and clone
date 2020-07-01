@@ -1,0 +1,49 @@
+---
+- name: Common Modules playbook
+  become: yes
+  hosts: webservers
+
+  tasks:
+   - name: install httpd on webserves
+     yum:
+      name: httpd
+      state: present
+   - name: Start and enable Httpd
+     service:
+      name: httpd
+      state: started
+      enabled: yes
+- name: DB server playbook
+  become: yes
+  hosts: dbservers
+
+  tasks:
+   - name: Add the 'dba' user to the dbservers
+     user:
+       name: dba
+   - name: copy required DBA files
+     copy:
+      src: /root/DBAstuff.txt
+      dest: /home/dba
+      owner: dba
+      group: dba
+      mode: 0600
+
+   - name: Create index.html
+     file:
+      path: /var/www/html/index.html
+      state: touch
+- name: Use git to clone the Ansible repo
+  hosts: admins
+  become: yes
+
+  tasks:
+   - name: Install git
+     yum:
+      name: git
+      state: present
+
+   - name: Use the git module
+     git:
+      repo: https://github.com/ansible/ansible.git
+      dest: /opt

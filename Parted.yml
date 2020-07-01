@@ -1,0 +1,34 @@
+---
+- hosts: rhel_ansible
+  become: yes
+  tasks:
+    - name: show options for parted module
+      parted:
+        device: : "{{ item }}"
+        number: 1  
+        state: present
+        part_end: 1GiB
+        label: msdos
+        flags: [lvm]
+      loop:
+        - /dev/nvme1n1
+        - /dev/nvme2n1
+
+
+    - name: show option for lvg module create volume group
+      lvg:
+          vg: vg_name
+          pvs: /dev/nvme1n1p1,/dev/nvme2n1p1
+          state: present
+
+    - name: show option for lvol module create Logical volume 
+      lvol:
+          pvs: /dev/nvme1n1p1,/dev/nvme2n1p1
+          force: no 
+          vg: vg_name 
+          lv: lv_name
+          resizefs: no volume.
+          state: presnet
+          shrink: yes 
+          opts: free 
+          size: 100%FREE

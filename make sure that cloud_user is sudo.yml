@@ -1,0 +1,17 @@
+---
+#verify that  user  cloud_user is in the sudoers list - CHANGE THE FILE NAME TO verify_cloud_user.yml
+# Run with ansible user the commend:  ansible-playbook verify_cloud_user.yml  --check -b
+
+
+- hosts: all
+#  remote_user: root
+#  become: no
+
+  tasks:
+   - name: Allow cloud_user user to have passwordless sudo
+     lineinfile:
+       dest: /etc/sudoers
+       state: present
+       regexp: '^%cloud_user'
+       line: '%cloud_user ALL=(ALL) NOPASSWD: ALL'
+       validate: /usr/sbin/visudo -cf %s

@@ -1,0 +1,30 @@
+---
+- name: Common Modules playbook
+  become: yes
+  hosts: webservers
+
+  tasks:
+   - name: install httpd on webserves
+     yum:
+      name: httpd
+      state: present
+   - name: Start and enable Httpd
+     service:
+      name: httpd
+      state: started
+      enabled: yes
+- name: DB server playbook
+  become: yes
+  hosts: dbservers
+
+  tasks:
+   - name: Add the 'dba' user to the dbservers
+     user:
+       name: dba
+   - name: copy required DBA files
+     copy:
+      src: /root/DBAstuff.txt
+      dest: /home/dba
+      owner: dba
+      group: dba
+      mode: 0600

@@ -1,0 +1,45 @@
+---
+- name: show option for service
+  service:
+    name: service_name
+    state: started |stopped|restarted|reloaded
+    enabled: yes:no
+    args: additional argumnets provided on the commend line
+
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: start and enable the httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: start  and enable firewalld service
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+
+#=====================================================================================================
+- name: show option for systemd module
+  systemd:
+    name: service_name
+    state: started |stopped|restarted|reloaded
+    enabled: yes|no
+    daemon_reload: yes|no
+    force: yes|no
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: start and enable the httpd service
+      systemd:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: start  and enable firewalld service
+      systemd:
+        name: firewalld
+        state: started
+        enabled: yes

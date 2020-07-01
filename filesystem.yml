@@ -1,0 +1,28 @@
+---
+- hosts: rhel_ansible
+  become: yes
+  tasks:
+    - name: create a ext4 file system on logical volume
+      filesystem:
+        fstype: ext4
+        dev: /dev/mapper/vg_ansible-lv_ansible
+
+
+
+
+---
+# Example for single package install playbook
+- hosts: host_name
+  become: yes
+  tasks:
+    - name: install a single package
+      yum:
+        name: package_name
+        state: Choices  are;   absent     installed     latest     present     removed
+#Whether to install (present or installed, latest), or remove (absent or removed) a package.
+#present and installed will simply ensure that a desired package is installed.
+#latest will update the specified package if it's not of the latest available version.
+#absent and removed will remove the specified package.
+#Default is None, however in effect the default action is present unless the autoremove option is enabled for this module, then absent is inferred.
+
+#==============================================================================================================================================================================================================================================================================================================================================================================================================

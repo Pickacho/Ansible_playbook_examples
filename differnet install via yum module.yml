@@ -1,0 +1,78 @@
+---
+# Example for single package install playbook
+- hosts: host_name
+  become: yes
+  tasks:
+    - name: install a single package
+      yum:
+        name: package_name
+        state: Choices  are;   absent     installed     latest     present     removed
+#Whether to install (present or installed, latest), or remove (absent or removed) a package.
+#present and installed will simply ensure that a desired package is installed.
+#latest will update the specified package if it's not of the latest available version.
+#absent and removed will remove the specified package.
+#Default is None, however in effect the default action is present unless the autoremove option is enabled for this module, then absent is inferred.
+
+#===============================================================================
+---
+# This PlayBook is using  vars to loop through and install Vim, Net-tools, mlocate
+- name: Install using loop vim net-tools mlocate
+  hosts: rhel_ansible
+  become: yes
+
+  tasks:
+   - yum:
+      name: "{{ packages }}"
+      state: latest
+     vars:
+       packages:
+        - vim
+        - net-tools
+        - mlocate
+
+
+#============================================================================
+# Example install  a list of packages
+- name: install a list  of packages
+  yum:
+    name:
+      - package_name
+      - package_name
+    state: latest
+#============================================================================
+#Example install rpm from a remote repo
+- name: install rpm from a remote repo
+  yum:
+    name: http://website.com/path/to/rpm
+    state: present
+#============================================================================
+#Example install rpm from local file
+- name: install rpm from local file
+  yum:
+    name: /path/to/file.rpm
+    state: latest
+
+#============================================================================
+#Example remove a package
+- name: Remove a package
+  yum:
+    name: package_name
+    state: absent
+
+#============================================================================
+---
+# This is a PlayBook that will use loop in order to install packages
+
+- name: Install via loop
+  hosts: rhel_ansible
+  become: yes
+
+  tasks:
+    - name: install via loop
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - vim
+        - net-tools
+        - mlocate

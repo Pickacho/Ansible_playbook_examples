@@ -1,0 +1,32 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: create a list of users
+      user:
+        name: "{{ item }}"
+        state: present
+        groups: wheel
+      loop:
+        - violet
+        - graham
+        - bethany
+
+
+
+---
+# This is a PlayBook that will use loop in order to install packages
+
+- name: Install via loop
+  hosts: rhel_ansible
+  become: yes
+
+  tasks:
+    - name: install via loop
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - vim
+        - net-tools
+        - mlocate

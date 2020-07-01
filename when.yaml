@@ -1,0 +1,9 @@
+---
+- hosts: rhel_ansible
+  become: yes
+  tasks:
+    - name: copy file
+      copy:
+        src: /home/cloud_user/index.html
+        dest: /var/www/html/index.html
+      when: ansible_hostname == "rhel_ansible"
