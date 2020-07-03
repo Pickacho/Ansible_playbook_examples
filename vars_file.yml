@@ -1,0 +1,27 @@
+---
+- hosts: centos_ansible
+  become: yes
+  vars_files:
+    - /home/cloud_user/ansible/vars/users.yml
+  tasks:
+    - name: create users
+      user:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "{{ students }}"
+        - "{{ faculty }}"
+
+
+---
+- hosts: centos_ansible
+  become: yes
+  vars_files:
+    - /home/cloud_user/ansible/vars/users.yml
+  tasks:
+    - name: create users
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{[students,faculty]|flatten(1) }}"
