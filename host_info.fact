@@ -1,0 +1,3 @@
+[centos_ansible]
+type=cloud
+platform=aws
