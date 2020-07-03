@@ -19,7 +19,7 @@
   vars_files:
     - /home/cloud_user/ansible/vars/users.yml
   tasks:
-    - name: remove  users and home dir
+    - name: remove users
       user:
         name: "{{ item }}"
         state: absent
