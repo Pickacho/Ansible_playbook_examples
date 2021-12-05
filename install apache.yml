@@ -1,0 +1,27 @@
+---
+- hosts: rhel_ansible
+  become: yes
+  tasks:
+    - name: install apache
+      yum:
+        name: httpd
+        state: latest
+    - name: create user and add them to the apache group
+      user:
+        name: "{{ item }}"
+        groups: apache
+      loop:
+          - will
+          - myles
+    - name: create index.html
+      template:
+        src: /home/cloud_user/ansible/templates/index.j2
+        dest: /var/www/html/index.html
+        owner: apache
+        group: apache
+        mode: 0644
+    - name: start and enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes

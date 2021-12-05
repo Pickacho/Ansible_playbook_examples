@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: install list of packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+      - firewalld
+      - mariadb-Server
+      - httpd
+      - php
+      - php-mysql
+      - git

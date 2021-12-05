@@ -1,0 +1,15 @@
+#This Playbook will include:
+#Install Firewall
+#Install MariaDB
+#configure MariaDB
+#start MariaDB
+#configure Firewall
+#configure DB
+# Load Data
+# install httpd
+# install php
+# configure Firewall
+# configure httpd
+# start httpd
+# downloadcode
+# test
