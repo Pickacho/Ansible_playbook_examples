@@ -13,3 +13,4 @@
       - php
       - php-mysql
       - git
+      - vim
