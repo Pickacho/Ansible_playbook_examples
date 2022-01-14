@@ -1,0 +1,18 @@
+--
+- name: Update Ansible packages
+  hosts: pro
+  remote_user: osboxes
+
+  vars:
+  ansible_ssh_user=root
+  ansible_ssh_password=157953
+
+  tasks:
+  - name: Ensure apache is at the latest version
+    ansible.builtin.yum:
+      name: httpd
+      state: latest
+  - name: Write the apache config file
+    ansible.builtin.template:
+      src: /srv/httpd.j2
+      dest: /etc/httpd.conf
