@@ -1,0 +1,172 @@
+---
+  
+- name: "install k8s"
+  hosts: lab
+  become: yes
+  gather_facts: no
+  tasks:
+  #   - name: "Add repository epel"
+  #     yum_repository:
+  #       name: epel
+  #       description: EPEL YUM repo
+  #       baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+  #       state: absent
+
+  #   - name: "Add Docker Reo"
+  #     yum_repository:
+  #       name: Docker
+  #       description: Docker YUM repo
+  #       baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+  #       # state: absent
+
+  #   - name: SwapOff
+  #     command: swapoff -a
+
+  #   - name: "remove old docker version"
+  #     yum:
+  #       name: "{{ item }}"
+  #       state: absent
+  #     with_items:
+  #       - docker
+  #       - docker-client
+  #       - docker-client-latest
+  #       - docker-common 
+  #       - docker-latest
+  #       - docker-latest-logrotate
+  #       - docker-logrotate
+  #       - docker-engine
+
+  #   - name: remove deamon docker
+  #     file:
+  #       path:  /etc/docker/daemon.json
+  #       state: absent 
+
+  #   - name: "install latest docker version"
+  #     yum:
+  #       name: "{{ item.name }}"
+  #       state: latest
+  #     loop:
+  #       - name: docker-ce
+  #       - name: docker-ce-cli
+  #       - name: containerd.io
+  #       - name: ca-certificates
+  #       - name: curl
+  #       # - 
+  #         # name: software-properties-common
+  #   #   notify: 
+  #   #     - start docker
+
+  #   - name: test Docker
+  #     shell: |
+  #       sudo usermod -aG docker $USER
+  #       sudo usermod -aG docker osboxes
+  #   # - name : set overlay
+  #   #   blockinfile:
+  #   #     path: /etc/docker/daemon.json
+  #   #     state: present 
+  #   #     block: 
+  #   #       {
+  #   #       "data-root": "/mnt/docker-data",
+  #   #       "storage-driver": "overlay2"
+  #   #       }
+  #   #     create: True
+
+  #   - name : set overlay
+  #     blockinfile:
+  #       path: /etc/docker/daemon.json
+  #       state: present 
+  #       block: 
+  #         {
+  #         "exec-opts":["native.cgroupdriver=systemd"],
+  #         "log-driver": "json-file",
+  #         "log-opts":{
+  #           "max-size": "100m"
+  #           },
+  #         "storage-driver": "overlay2"
+  #         }
+  #       create: True
+
+  #   - name: create directory
+  #     file:
+  #       path: /etc/systemd/system/docker.service.d
+  #       state: directory
+
+  #   - name: Just force systemd to reread configs (2.4 and above)
+  #     ansible.builtin.systemd:
+  #       daemon_reload: yes
+
+  #   - name: start docker
+  #     service:
+  #       name: docker
+  #       state: started
+  #       enabled: yes
+
+  # # handlers:
+  # # - name: start docker
+  # #   service:
+  # #     name: docker
+  # #     state: started
+
+  # #######################################################################################  Kubernetes part #################################
+
+    - name: set kubernetes.repo
+      blockinfile:
+        path: /etc/yum.repos.d/kubernetes.repo
+        state: present 
+        block: |
+          [kubernetes]
+          name=Kubernetes
+          baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+          enabled=1
+          gpgcheck=1
+          repo_gpgcheck=1
+          gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+        create: True
+
+    - name: "install Kubernetes packages"
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - kubelet
+        - kubeadm
+        - kubectl
+        - bash-completion
+    - name: "Packages version lock"
+      community.general.yum_versionlock:
+        state: present
+        name:
+        - kubelet
+        - kubeadm
+        - kubectl
+
+
+
+    - name: configure bash-completion
+      shell: |
+        kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+        echo 'alias k=kubectl' >>~/.bashrc
+        echo 'complete -F __start_kubectl k' >>~/.bashrc
+
+
+- name: "this will be execute on master only"
+  hosts: master
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  tasks: 
+    - name: configure the cluster
+      shell: |
+        firewall-cmd --permanent --add-port=6443/tcp
+        firewall-cmd --permanent --add-port=2379-2380/tcp
+        firewall-cmd --permanent --add-port=10250/tcp
+        firewall-cmd --permanent --add-port=10251/tcp
+        firewall-cmd --permanent --add-port=10252/tcp
+        firewall-cmd --permanent --add-port=10255/tcp
+        firewall-cmd --permanent --add-port=8472/udp
+        firewall-cmd --add-masquerade --permanent
+        # # only if you want NodePorts exposed on control plane IP as well
+        # firewall-cmd --permanent --add-port=30000-32767/tcp
+        systemctl restart firewalld
+        systemctl enable kubelet.service
+        sudo kubeadm init --pod-network-cidr=192.168.0.0/16

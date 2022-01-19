@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  name: Create user on a linux server
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  connection: ssh
+
+  tasks:
+    - user:
+        name: '{{ item.name }}' 
+        password: "{{ item.password }}' | password_hash('sha512')"
+        uid: '{{ item.uid }}'
+        state: '{{ item.state }}'
+        groups: sudo
+        update_password: on_create
+      with_items:
+        - name: "Boss"
+          password: "123456" 
+          uid: "1234"
+          state: 'present'
+
+  # - ansible.builtin.user:
+  #     name: "johnd"
+  #     comment: "John Doe"
+  #     uid: 1040
+  #     group: "admin"
+    # password: "{{ 'password' | password_hash('sha512') }}"
+  #   password: "{{ 'password' | password_hash('sha512') }}"
+  #   shell: /bin/zsh
+  #   update_password: on_create
+
+  # - user:
+  #     name: "{{ user }}"
+  #     password: "{{ password }}"
+  #     groups:
+  #       - wheel
+  #     state: present

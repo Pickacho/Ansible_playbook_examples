@@ -1,11 +1,12 @@
---
+---
+
 - name: Update Ansible packages
   hosts: pro
   remote_user: osboxes
 
   vars:
-  ansible_ssh_user=root
-  ansible_ssh_password=157953
+  ansible_ssh_user: root
+  ansible_ssh_password: 157953
 
   tasks:
   - name: Ensure apache is at the latest version
@@ -16,3 +17,26 @@
     ansible.builtin.template:
       src: /srv/httpd.j2
       dest: /etc/httpd.conf
+
+
+
+---
+  
+-
+  name: play 1
+  hosts: localhost
+  tasks:
+    - name: Execute Command 'date'
+      command: date
+
+    - name: Execute script on server
+      script: test_script.sh
+
+-
+  name: play 2
+  hosts: localhost
+  tasks:
+    - name: install web service
+      yum:
+            name: httpd
+            state: present

@@ -1,0 +1,51 @@
+---
+
+# -
+#   name: play 1
+#   hosts: localhost
+#   tasks:
+#     - name: Execute Command 'date'
+#       command: date
+#
+#     - name: Execute script on server
+#       script: test_script.sh
+
+-
+  name: play 2
+  hosts: localhost
+  # become: yes
+  # become_user: root
+  remote_user: thor
+  become: true
+  become_method: sudo
+  # become_user: sshuser
+  vars:
+    ansible_become_pass: 157953
+
+  tasks:
+    - name: update ubuntu service
+      # apt:
+      #   name: "*"
+      #   state: latest
+
+      apt:
+        name: 'bat'
+        state: latest
+        update_cache: yes
+        autoclean: yes
+        force_apt_get: yes
+---
+
+- 
+  name: "create users"
+  hosts: localhost
+  gather_facts: false
+  tasks: 
+    ansible.builtin.user: ~
+    groups: wheel
+    loop: 
+      - thor
+    name: "{{ item }}"
+    state: present
+
+
