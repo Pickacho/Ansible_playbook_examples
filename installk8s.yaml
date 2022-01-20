@@ -48,10 +48,10 @@
         - docker-logrotate
         - docker-engine
 
-    - name: remove deamon docker
-      file:
-        path:  /etc/docker/daemon.json
-        state: absent 
+    # - name: remove deamon docker
+    #   file:
+    #     path:  /etc/docker/daemon.json
+    #     state: absent 
 
     - name: "install latest docker version"
       yum:
@@ -83,6 +83,12 @@
     #       "storage-driver": "overlay2"
     #       }
     #     create: True
+    - name: create /etc/docker directory
+      file:
+        path: /etc/docker
+        state: directory
+
+
 
     - name : set overlay
       shell: |
@@ -97,11 +103,11 @@
         }
         EOF
     
-    - name: Remove blank lines blockinfile put in
-      lineinfile :
-        path: /etc/docker/daemon.json
-        state: absent
-        regexp: '^$'
+    # - name: Remove blank lines blockinfile put in
+    #   lineinfile :
+    #     path: /etc/docker/daemon.json
+    #     state: absent
+    #     regexp: '^$'
 
     - name: create directory
       file:
@@ -185,4 +191,4 @@
         firewall-cmd --permanent --add-port=30000-32767/tcp
         systemctl restart firewalld
         systemctl enable kubelet.service
-      # sudo kubeadm init --pod-network-cidr=192.168.0.0/16
+        sudo kubeadm init --pod-network-cidr=192.168.0.0/16
