@@ -5,6 +5,11 @@
   become: yes
   gather_facts: no
   tasks:
+    # - name: Remove exa.zsh
+    #   shell: |
+    #     sudo rm /etc/bash_completion.d/exa.zsh
+    
+    
     - name: "Add repository epel"
       yum_repository:
         name: epel
@@ -165,11 +170,11 @@
 
 
 
-    - name: configure bash-completion
-      shell: |
-        kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
-        echo 'alias k=kubectl' >>~/.bashrc
-        echo 'complete -F __start_kubectl k' >>~/.bashrc
+    # - name: configure bash-completion
+    #   shell: |
+    #     kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+    #     echo 'alias k=kubectl' >>~/.bashrc
+    #     echo 'complete -F __start_kubectl k' >>~/.bashrc
 
 
 - name: "this will be execute on master only"
@@ -191,4 +196,14 @@
         firewall-cmd --permanent --add-port=30000-32767/tcp
         systemctl restart firewalld
         systemctl enable kubelet.service
+
+    - name: Kubeadm init
+      shell:
         sudo kubeadm init --pod-network-cidr=192.168.0.0/16
+      register: init_info
+    
+    - name: Kubeadm list tokens
+      shell:
+        sudo kubeadm token list
+      register: token_list
+      
