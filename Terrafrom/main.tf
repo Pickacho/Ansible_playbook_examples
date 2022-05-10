@@ -1,9 +1,9 @@
 resource "local_file" "pet" {
-    filename = "/home/thor/Documents/GitHub/Ansible_playbook_examples/Terrafrom/terraform-local-file/pets.txt"
-    content = "We love pets!"
+    filename = var.filename
+    content = var.content
 }
 resource "random_pet" "my-pet" {
-    prefix = "Mrs"
-    separator = "."
-    length = "1"
+    prefix = var.prefix
+    separator = var.separator
+    length = var.length
 }
