@@ -3,7 +3,11 @@ resource "local_file" "pet" {
     content = var.content
 }
 resource "random_pet" "my-pet" {
+<<<<<<< HEAD
+    prefix = var.prefix[1]
+=======
     prefix = var.prefix[2]
+>>>>>>> f46fe1b0f3abea9144283939f13c16e013f50ff3
     separator = var.separator
     length = var.length
 }

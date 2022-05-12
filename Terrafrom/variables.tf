@@ -19,6 +19,10 @@ variable "prefix" {
 }
 
 variable file-content {
+<<<<<<< HEAD
+    
+  
+=======
 type = map
 default = {
     "statement1" = "We love pets!"
@@ -32,4 +36,5 @@ variable "prefixsirstringname" {
 variable "prefixsirnamenumber" {
     default = [ 1 , 2, 3]
     type =  list(number)
+>>>>>>> f46fe1b0f3abea9144283939f13c16e013f50ff3
 }
