@@ -1,0 +1,122 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "networkInterfaceName1": {
+            "value": "vm121801_z1"
+        },
+        "enableAcceleratedNetworking": {
+            "value": true
+        },
+        "networkSecurityGroupName": {
+            "value": "VM121-nsg"
+        },
+        "networkSecurityGroupRules": {
+            "value": [
+                {
+                    "name": "RDP",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "3389"
+                    }
+                }
+            ]
+        },
+        "subnetName": {
+            "value": "default"
+        },
+        "virtualNetworkId": {
+            "value": "/subscriptions/964df7ca-3ba4-48b6-a695-1ed9db5723f8/resourceGroups/181-75c29660-getting-started-with-azure-templates/providers/Microsoft.Network/virtualNetworks/181-75c29660-getting-started-with-azure-templates-vnet"
+        },
+        "publicIpAddressName1": {
+            "value": "VM121-ip"
+        },
+        "publicIpAddressType": {
+            "value": "Static"
+        },
+        "publicIpAddressSku": {
+            "value": "Standard"
+        },
+        "pipDeleteOption": {
+            "value": "Detach"
+        },
+        "virtualMachineName": {
+            "value": "VM121"
+        },
+        "virtualMachineName1": {
+            "value": "VM121"
+        },
+        "virtualMachineComputerName1": {
+            "value": "VM121"
+        },
+        "virtualMachineRG": {
+            "value": "181-75c29660-getting-started-with-azure-templates"
+        },
+        "osDiskType": {
+            "value": "Premium_LRS"
+        },
+        "osDiskDeleteOption": {
+            "value": "Delete"
+        },
+        "dataDisks1": {
+            "value": [
+                {
+                    "lun": 0,
+                    "createOption": "attach",
+                    "deleteOption": "Detach",
+                    "caching": "ReadOnly",
+                    "writeAcceleratorEnabled": false,
+                    "id": null,
+                    "name": "VM121_DataDisk_0",
+                    "storageAccountType": null,
+                    "diskSizeGB": null,
+                    "diskEncryptionSet": null
+                }
+            ]
+        },
+        "dataDiskResources1": {
+            "value": [
+                {
+                    "name": "VM121_DataDisk_0",
+                    "sku": "Premium_LRS",
+                    "properties": {
+                        "diskSizeGB": 1024,
+                        "creationData": {
+                            "createOption": "empty"
+                        }
+                    }
+                }
+            ]
+        },
+        "virtualMachineSize": {
+            "value": "Standard_DS1_v2"
+        },
+        "nicDeleteOption": {
+            "value": "Detach"
+        },
+        "adminUsername": {
+            "value": "thor"
+        },
+        "adminPassword": {
+            "value": null
+        },
+        "patchMode": {
+            "value": "AutomaticByOS"
+        },
+        "enableHotpatching": {
+            "value": false
+        },
+        "zone": {
+            "value": "1"
+        }
+    }
+}
