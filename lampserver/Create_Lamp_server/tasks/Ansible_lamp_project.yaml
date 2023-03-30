@@ -1,0 +1,37 @@
+#This Playbook will include:
+#Install Firewall
+#Install MariaDB
+#configure MariaDB
+#start MariaDB
+#configure Firewall
+#configure DB
+# Load Data
+# install httpd
+# install php
+# configure Firewall
+# configure httpd
+# start httpd
+# downloadcode
+# test
+---
+# Description
+- name: Description of the playbook
+  hosts: all
+  gather_facts: true
+  tasks:
+    name: install stuff
+    yum:
+      name: {{  item }}
+      state: present
+    with items:
+      - wget
+      - git
+      - firewalld
+      - mariadb-server
+
+    name: start firewalld
+    service:
+      name:  firewalld# required. Name of the service.
+      state: restarted 
+      enabled:  yes
+#configure MariaDB

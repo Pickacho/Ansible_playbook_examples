@@ -1,3 +1,7 @@
 {
-    "DockerRun.DisableAutoGenerateConfig": true
+    "DockerRun.DisableAutoGenerateConfig": true,
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/ansible/ansible-navigator/main/src/ansible_navigator/data/ansible-navigator.json": "file:///c%3A/Users/ran0c/Documents/Github/Ansible_playbook_examples/lampserver/Create_Lamp_server/tasks/main.yml",
+        "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook": "file:///c%3A/Users/ran0c/Documents/Github/Ansible_playbook_examples/lampserver/Create_Lamp_server/tasks/Ansible_lamp_project.yaml"
+    }
 }
